@@ -27,6 +27,7 @@ const MainPage = () => {
           key={classroomNumber}
           title={`Classroom ${classroomNumber}`}
           onPress={() => navigateToClassroom(classroomNumber)}
+          style={styles.classroomButton}
         />
       ))}
       <View style={styles.inputContainer}>
@@ -37,7 +38,7 @@ const MainPage = () => {
           placeholder="New Classroom Number"
           keyboardType="numeric"
         />
-        <Button title="ADD Class" onPress={addClassroom} />
+        <Button title="ADD Class" onPress={addClassroom} style={styles.addButton} />
       </View>
     </View>
   );
@@ -48,6 +49,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  classroomButton: {
+    marginBottom: 10,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -61,6 +65,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 10,
     marginRight: 10,
+  },
+  addButton: {
+    marginTop: 0, // Adjust the margin as needed
   },
 });
 

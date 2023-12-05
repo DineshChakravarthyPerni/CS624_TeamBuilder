@@ -30,18 +30,26 @@ const StudentInfoPage = ({ route }) => {
       studentInfo.country &&
       studentInfo.experience
     ) {
-      dispatch({ type: 'ADD_STUDENT', payload: studentInfo });
-      setStudentInfo({
-        name: '',
-        email: '',
-        id: '',
-        country: '',
-        experience: '',
-      });
+      // Check if the ID is already taken
+      const isIdTaken = state.students.some((student) => student.id === studentInfo.id);
+  
+      if (isIdTaken) {
+        alert('Student ID is already taken. Please choose a unique ID.');
+      } else {
+        dispatch({ type: 'ADD_STUDENT', payload: studentInfo });
+        setStudentInfo({
+          name:       '',
+          email:      '',
+          id:         '',
+          country:    '',
+          experience: '',
+        });
+      }
     } else {
       alert('Please fill in all details.');
     }
   };
+  
 
   const formTeams = () => {
     const teams = [];
@@ -133,10 +141,11 @@ const StudentInfoPage = ({ route }) => {
           />
         </View>
         <View style={styles.buttonRow}>
-          <Button title="Add Student Info" onPress={addStudentInfo} />
-          <Button title="Team Formation" onPress={formTeams} />
-          <Button title="Get Team Details" onPress={getTeamDetails} />
-        </View>
+  <Button title="Add Student Info" onPress={addStudentInfo} style={styles.button} />
+  <Button title="Team Formation" onPress={formTeams} style={styles.button} />
+  <Button title="Get Team Details" onPress={getTeamDetails} style={styles.button} />
+</View>
+
         <View>
         <Text style={styles.teamHeader}>Formed Teams:</Text>
           {displayedTeams &&
@@ -157,7 +166,7 @@ const StudentInfoPage = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 60,
+    padding: 20, // Adjusted padding for better spacing
     backgroundColor: '#fff',
     justifyContent: 'center', // Center content vertically
   },
@@ -171,6 +180,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginRight: 10,
     flex: 1,
+    minWidth: 80, // Set a minimum width for better alignment
   },
   input: {
     flex: 2,
@@ -178,14 +188,13 @@ const styles = StyleSheet.create({
     borderColor: 'green',
     borderWidth: 1,
     paddingHorizontal: 10,
+    minWidth: 200, // Set a minimum width for better alignment
   },
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 20,
   },
-
-
   teamHeader: {
     marginTop: 25,
     fontSize: 18,
@@ -194,9 +203,17 @@ const styles = StyleSheet.create({
   teamContainer: {
     marginBottom: 10,
   },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  button: {
+    marginRight: 10, // Adjust the value based on your preference
+  },
   teamText: {
     fontSize: 16,
   },
 });
+
 
 export default StudentInfoPage;
