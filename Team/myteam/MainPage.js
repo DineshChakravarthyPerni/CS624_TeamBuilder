@@ -1,23 +1,29 @@
 import React, { useState } from 'react';
-import { View, Button, TextInput, StyleSheet, Text } from 'react-native';
+import { View, Button, TextInput, StyleSheet } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 
 const MainPage = () => {
-  const navigation = useNavigation();
-  const [newClassroom, setNewClassroom] = useState('');
+  const Tab = createBottomTabNavigator();
   const [classrooms, setClassrooms] = useState([1, 2, 3]);
+
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Classes">
+        {() => <ClassesTab classrooms={classrooms} />}
+      </Tab.Screen>
+      <Tab.Screen name="Add Class">
+        {() => <AddClassTab classrooms={classrooms} setClassrooms={setClassrooms} />}
+      </Tab.Screen>
+    </Tab.Navigator>
+  );
+};
+
+const ClassesTab = ({ classrooms }) => {
+  const navigation = useNavigation();
 
   const navigateToClassroom = (classroomNumber) => {
     navigation.navigate('Classroom', { classroomNumber });
-  };
-
-  const addClassroom = () => {
-    if (newClassroom && !classrooms.includes(newClassroom)) {
-      setClassrooms((prevClassrooms) => [...prevClassrooms, newClassroom]);
-      setNewClassroom('');
-    } else {
-      alert('Please enter a valid classroom number.');
-    }
   };
 
   return (
@@ -30,6 +36,24 @@ const MainPage = () => {
           style={styles.classroomButton}
         />
       ))}
+    </View>
+  );
+};
+
+const AddClassTab = ({ classrooms, setClassrooms }) => {
+  const [newClassroom, setNewClassroom] = useState('');
+
+  const addClassroom = () => {
+    if (newClassroom && !classrooms.includes(newClassroom)) {
+      setClassrooms((prevClassrooms) => [...prevClassrooms, newClassroom]);
+      setNewClassroom('');
+    } else {
+      alert('Please enter a valid classroom number.');
+    }
+  };
+
+  return (
+    <View style={styles.container}>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
